@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier une patineuse{% endblock %}
+
+{% block body %}
+<div class="container">
+
+    <div class="card shadow">
+        <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
+            <h1 class="h3 mb-0">Modifier la patineuse</h1>
+            <span class="badge bg-dark">{{ patineuse.niveau.nom|default('Sans niveau') }}</span>
+        </div>
+        <div class="card-body">
+            {{ component('PatineuseEditComponent', { patineuse: patineuse }) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

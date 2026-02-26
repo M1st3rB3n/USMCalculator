@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - USM Calculator{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="jumbotron bg-light p-5 rounded-3 shadow-sm mb-4 text-center">
+        <h1 class="display-4">USM Calculator</h1>
+        <p class="lead">Bienvenue sur l'outil de gestion et de calcul des notes pour les compétitions de patinage.</p>
+        <hr class="my-4">
+        <p>Gérez vos patineuses, compétitions et saisissez les notes en temps réel.</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-trophy"></i> Compétitions</h5>
+                    <p class="card-text">Gérez les compétitions et les épreuves associées.</p>
+                    <a href="{{ path('app_competition_index') }}" class="btn btn-primary w-100">Voir les compétitions</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-people"></i> Patineuses</h5>
+                    <p class="card-text">Liste complète des patineuses inscrites.</p>
+                    <a href="{{ path('app_patineuse_index') }}" class="btn btn-primary w-100">Gérer les patineuses</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-clipboard-check"></i> Engagements</h5>
+                    <p class="card-text">Inscriptions des patineuses aux épreuves et saisie des notes.</p>
+                    <a href="{{ path('app_engagement_index') }}" class="btn btn-primary w-100">Voir les engagements</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-info bg-light">
+                <div class="card-body">
+                    <h5 class="card-title text-info"><i class="bi bi-gear"></i> Paramétrages</h5>
+                    <p class="card-text small text-muted">Configuration des catégories, clubs et éléments (techniques/artistiques).</p>
+                    <div class="d-grid gap-2">
+                        <a href="{{ path('app_categorie_index') }}" class="btn btn-outline-info btn-sm">Catégories</a>
+                        <a href="{{ path('app_niveau_index') }}" class="btn btn-outline-info btn-sm">Niveaux</a>
+                        <a href="{{ path('app_club_index') }}" class="btn btn-outline-info btn-sm">Clubs</a>
+                        <a href="{{ path('app_element_technique_index') }}" class="btn btn-outline-info btn-sm">Éléments Techniques</a>
+                        <a href="{{ path('app_element_artistique_index') }}" class="btn btn-outline-info btn-sm">Éléments Artistiques</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

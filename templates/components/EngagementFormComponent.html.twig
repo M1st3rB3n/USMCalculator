@@ -1,0 +1,25 @@
+<div {{ attributes }}>
+    {{ form_start(form, {
+        attr: {
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'save',
+        }
+    }) }}
+{#        {% for message in app.flashes('error') %}#}
+{#            <div class="alert alert-danger">{{ message }}</div>#}
+{#        {% endfor %}#}
+        {{ form_row(form.patineuse) }}
+{#        {{ form_row(form.epreuve) }}#}
+
+        <div class="d-none">
+            {{ form_rest(form) }}
+        </div>
+        <button type="submit" class="btn btn-success w-100 mt-3" data-loading="addAttribute(disabled)">
+            <span data-loading="hide">Ajouter</span>
+            <span data-loading="show" style="display: none;">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Traitement...
+            </span>
+        </button>
+    {{ form_end(form) }}
+</div>

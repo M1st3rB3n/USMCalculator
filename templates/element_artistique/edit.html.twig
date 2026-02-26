@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier l'élément artistique{% endblock %}
+
+{% block body %}
+<div class="container">
+
+    <div class="card shadow">
+        <div class="card-header bg-warning text-dark">
+            <h1 class="h3 mb-0">Modifier l'élément artistique : {{ element.nom }}</h1>
+        </div>
+        <div class="card-body">
+            {{ form_start(form) }}
+                {{ form_row(form.nom) }}
+                <div class="row">
+                    <div class="col-md-6">{{ form_row(form.score) }}</div>
+                    <div class="col-md-6">{{ form_row(form.QoE) }}</div>
+                </div>
+                <div class="d-flex justify-content-between mt-3">
+                    <a href="{{ path('app_element_artistique_index') }}" class="btn btn-secondary">Annuler</a>
+                    <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}
