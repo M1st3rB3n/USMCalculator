@@ -39,10 +39,6 @@ ENV LC_ALL=fr_FR.UTF-8
 # Set working directory
 WORKDIR /var/www/USMCalculator
 
-# Set Symfony environment to production
-ENV APP_ENV=prod
-ENV APP_DEBUG=0
-
 # Copy application files
 COPY . .
 
