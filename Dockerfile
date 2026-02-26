@@ -26,7 +26,8 @@ RUN apt-get update && \
     php8.4-gmp \
     php8.4-gd \
     php8.4-sqlite3 \
-    php8.4-bcmath
+    php8.4-bcmath \
+    php8.4-zip
 
 RUN apt-get clean
 
