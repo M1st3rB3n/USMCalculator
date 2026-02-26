@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des éléments artistiques{% endblock %}
+
+{% block body %}
+<div class="container">
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Liste des éléments artistiques</h1>
+        <a href="{{ path('app_element_artistique_new') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Nouvel élément</a>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-body">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Score</th>
+                        <th>QoE</th>
+                        <th class="text-end px-4">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for element in elements %}
+                        <tr>
+                            <td>{{ element.nom }}</td>
+                            <td>{{ element.score|default('0') }}</td>
+                            <td>{{ element.QoE|default('0') }}</td>
+                            <td class="text-end px-4">
+                                <a href="{{ path('app_element_artistique_edit', {id: element.id}) }}" class="btn btn-sm btn-outline-warning">Modifier</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted">Aucun élément trouvé.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,138 @@
+<div {{ attributes }}>
+    <div  {{ stimulus_controller('saisie-notes') }}>
+        {{ form_start(form, {
+            attr: {
+                'data-action': 'live#action:prevent',
+                'data-live-action-param': 'save'
+            }
+        }) }}
+
+        <h2 class="h4 border-bottom pb-2 mb-3">Éléments Techniques</h2>
+        <div class="table-responsive mb-4">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Élément</th>
+                        <th style="width: 250px;">Evaluation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for techField in form.techniques %}
+                        {% set index_item = 'tech-' ~ loop.index0 %}
+                        <tr>
+                            <td>
+                                <span class="fw-bold">{{ epreuve.elementsTechniques[loop.index0].nom }}</span>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="btn-group" role="group">
+                                        {% for index in 0..6 %}
+                                            {% set nbChoix = 3 %}
+                                            {% set val = (index - nbChoix) * techField.vars.value.elementTechnique.QoE + techField.vars.value.elementTechnique.score %}
+                                            <input type="radio"
+                                                   class="btn-check qoe-radio"
+                                                   name="btnradio_{{ index_item }}"
+                                                   id="btnradio_{{ index_item }}_{{ index }}"
+                                                   value="{{ val }}"
+                                                   data-index="{{ index_item }}"
+                                                   data-action="change->saisie-notes#updateInput"
+                                                   autocomplete="off"
+                                            >
+                                            <label class="btn btn-outline-primary btn-sm" for="btnradio_{{ index_item }}_{{ index }}">{{ index - nbChoix }}</label>
+                                        {% endfor %}
+                                    </div>
+                                    <button type="button" class="btn btn-outline-danger btn-sm qoe-unset" data-index="{{ index_item }}" data-action="click->saisie-notes#unset" title="Effacer">
+                                        &times;
+                                    </button>
+                                </div>
+                                {{ form_widget(techField.note, {attr: {
+                                    class: 'form-control form-control-sm qoe-input tech-qoe-input d-none',
+                                    'data-index': index_item,
+                                    'data-action': 'input->saisie-notes#handleInputChange'
+                                }}) }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr class="table-light">
+                        <th class="text-end">Total Technique :</th>
+                        <th data-saisie-notes-target="totalTechnique">0.00</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <h2 class="h4 border-bottom pb-2 mb-3">Éléments Artistiques</h2>
+        <div class="table-responsive mb-4">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Élément</th>
+                        <th style="width: 250px;">Evaluation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for artField in form.artistiques %}
+                        {% set index_item = 'art-' ~ loop.index0 %}
+                        <tr>
+                            <td>
+                                <span class="fw-bold">{{ epreuve.elementsArtistiques[loop.index0].nom }}</span>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="btn-group" role="group">
+                                        {% set nbChoix = 2 %}
+                                        {% for index in 0..(nbChoix*2) %}
+                                            {% set val = (index - nbChoix) * artField.vars.value.elementArtistique.QoE + artField.vars.value.elementArtistique.score %}
+                                            <input type="radio"
+                                                   class="btn-check qoe-radio"
+                                                   name="ignore_btnradio_{{ index_item }}"
+                                                   id="btnradio_{{ index_item }}_{{ index }}"
+                                                   value="{{ val }}"
+                                                   data-index="{{ index_item }}"
+                                                   data-action="change->saisie-notes#updateInput"
+                                                   autocomplete="off"
+                                            >
+                                            <label class="btn btn-outline-primary btn-sm" for="btnradio_{{ index_item }}_{{ index }}">{{ index - nbChoix }}</label>
+                                        {% endfor %}
+                                    </div>
+                                    <button type="button" class="btn btn-outline-danger btn-sm qoe-unset" data-index="{{ index_item }}" data-action="click->saisie-notes#unset" title="Effacer">
+                                        &times;
+                                    </button>
+                                </div>
+                                {{ form_widget(artField.note, {attr: {
+                                class: 'form-control form-control-sm qoe-input art-qoe-input d-none',
+                                'data-index': index_item,
+                                'data-action': 'input->saisie-notes#handleInputChange'
+                                }}) }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr class="table-light">
+                        <th class="text-end">Total Artistique :</th>
+                        <th data-saisie-notes-target="totalArtistique">0.00</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="card mb-4 bg-light">
+            <div class="card-body d-flex justify-content-end align-items-center gap-3">
+                <h3 class="h5 mb-0">Total Général :</h3>
+                <span class="h4 mb-0 fw-bold text-primary" data-saisie-notes-target="totalGlobal">0.00</span>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <a href="{{ path('app_engagement_index') }}" class="btn btn-secondary">Retour aux engagements</a>
+            <button type="submit" class="btn btn-success btn-lg px-5">
+                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" data-live-loading-target="display"></span>
+                Enregistrer toutes les notes
+            </button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>

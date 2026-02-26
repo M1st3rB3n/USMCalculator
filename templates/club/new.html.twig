@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Club{% endblock %}
+
+{% block body %}
+<div class="container">
+
+    <div class="card shadow">
+        <div class="card-header bg-success text-white">
+            <h1 class="h3 mb-0">Ajouter un club</h1>
+        </div>
+        <div class="card-body">
+            {{ form_start(form) }}
+                {{ form_row(form.nom) }}
+                {{ form_row(form.ville) }}
+                {{ form_row(form.logo_file) }}
+                <div class="d-flex justify-content-between mt-3">
+                    <a href="{{ path('app_club_index') }}" class="btn btn-secondary">Annuler</a>
+                    <button type="submit" class="btn btn-success">Enregistrer</button>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Engagements - {{ competition.nom }}{% endblock %}
+
+{% block body %}
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('app_competition_index') }}">Compétitions</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Engagements {{ competition.nom }}</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Résultats : {{ competition.nom }}</h1>
+        <span class="badge bg-primary fs-5">{{ competition.date|date('d/m/Y') }}</span>
+    </div>
+
+    {% for epreuve in competition.epreuves %}
+        <div class="card shadow mb-4">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                <h3 class="mb-0">{{ epreuve.nom }}</h3>
+                <div>
+                    <span class="badge bg-secondary">{{ epreuve.categorie.nom|default('N/A') }}</span>
+                    <span class="badge bg-info text-dark">{{ epreuve.niveau.nom|default('N/A') }}</span>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-striped table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th class="ps-4">Patineuse</th>
+                            <th>Club</th>
+                            <th>Année de Naissance</th>
+                            <th class="text-center">Total Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for engagement in epreuve.engagements %}
+                            <tr>
+                                <td class="ps-4">
+                                    <strong>{{ engagement.patineuse.nom|upper }}</strong> {{ engagement.patineuse.prenom }}
+                                </td>
+                                <td>{{ engagement.patineuse.club.nom|default('-') }}</td>
+                                <td>{{ engagement.patineuse.anneeDeNaissance|default('-') }}</td>
+                                <td class="text-center">
+                                    <span class="badge bg-info text-dark">{{ engagement.totalNotes|number_format(2, ',', ' ') }}</span>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-3">Aucun engagement pour cette épreuve.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            Aucune épreuve n'est configurée pour cette compétition.
+        </div>
+    {% endfor %}
+
+    <div class="mt-4">
+        <a href="{{ path('app_competition_index') }}" class="btn btn-outline-secondary">Retour à la liste</a>
+    </div>
+</div>
+{% endblock %}

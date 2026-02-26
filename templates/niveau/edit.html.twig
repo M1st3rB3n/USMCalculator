@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le niveau{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-warning text-dark">
+                    <h1 class="h3 mb-0">Modifier le niveau : {{ niveau.nom }}</h1>
+                </div>
+                <div class="card-body">
+                    {{ include('niveau/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

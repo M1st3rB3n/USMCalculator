@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Engagements - {{ competition.nom }}{% endblock %}
+
+{% block body %}
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('app_competition_index') }}">Compétitions</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ competition.nom }}</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Engagements - {{ competition.nom }}</h1>
+        <a href="{{ path('app_competition_index') }}" class="btn btn-outline-secondary">Retour à la liste</a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="card-title mb-0">Ajouter un engagement</h5>
+                </div>
+                <div class="card-body">
+                    {{ component('EngagementFormComponent', { competition: competition }) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            {{ component('EngagementListComponent', { competition: competition }) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

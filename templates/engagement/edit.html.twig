@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier l'Engagement{% endblock %}
+
+{% block body %}
+<div class="container">
+
+    <div class="card shadow">
+        <div class="card-header bg-warning text-dark">
+            <h1 class="h3 mb-0">Modifier l'engagement de {{ engagement.patineuse.prenom }} {{ engagement.patineuse.nom }}</h1>
+        </div>
+        <div class="card-body">
+            {{ form_start(form) }}
+                {{ form_row(form.patineuse) }}
+                {{ form_row(form.epreuve) }}
+                <div class="d-flex justify-content-between mt-3">
+                    <a href="{{ path('app_engagement_index') }}" class="btn btn-secondary">Annuler</a>
+                    <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

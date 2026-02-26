@@ -1,0 +1,49 @@
+<div {{ attributes }}>
+    {{ form_start(form, {
+        attr: {
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'save',
+        }
+    }) }}
+        {{ form_row(form.nom) }}
+        {{ form_row(form.categorie) }}
+        {{ form_row(form.niveau) }}
+
+        <div class="mt-3">
+            {{ form_label(form.elementsTechniques) }}
+            <div class="border rounded p-2 bg-light mb-3" style="max-height: 200px; overflow-y: auto;">
+                {% for child in form.elementsTechniques %}
+                    <div class="form-check">
+                        {{ form_widget(child) }}
+                        {{ form_label(child) }}
+                    </div>
+                {% endfor %}
+            </div>
+            {{ form_errors(form.elementsTechniques) }}
+        </div>
+
+        <div class="mt-3">
+            {{ form_label(form.elementsArtistiques) }}
+            <div class="border rounded p-2 bg-light mb-3" style="max-height: 200px; overflow-y: auto;">
+                {% for child in form.elementsArtistiques %}
+                    <div class="form-check">
+                        {{ form_widget(child) }}
+                        {{ form_label(child) }}
+                    </div>
+                {% endfor %}
+            </div>
+            {{ form_errors(form.elementsArtistiques) }}
+        </div>
+
+        <div class="d-none">
+            {{ form_rest(form) }}
+        </div>
+        <button type="submit" class="btn btn-success w-100 mt-3" data-loading="addAttribute(disabled)">
+            <span data-loading="hide">{{ initialFormData ? "Mettre à jour l'épreuve" : "Créer l'épreuve" }}</span>
+            <span data-loading="show" style="display: none;">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Traitement...
+            </span>
+        </button>
+    {{ form_end(form) }}
+</div>

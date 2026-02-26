@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le Club{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="card shadow">
+        <div class="card-header bg-warning text-dark">
+            <h1 class="h3 mb-0">Modifier le club : {{ club.nom }}</h1>
+        </div>
+        <div class="card-body">
+            {{ form_start(form) }}
+                {{ form_row(form.nom) }}
+                {{ form_row(form.ville) }}
+
+                {% if club.logo %}
+                    <div class="mb-3">
+                        <label class="form-label">Logo actuel</label>
+                        <div>
+                            <img src="{{ asset('uploads/logos/' ~ club.logo) }}" alt="Logo {{ club.nom }}" class="img-thumbnail" style="max-height: 100px;">
+                        </div>
+                    </div>
+                {% endif %}
+
+                {{ form_row(form.logo_file) }}
+
+                <div class="d-flex justify-content-between mt-3">
+                    <a href="{{ path('app_club_index') }}" class="btn btn-secondary">Annuler</a>
+                    <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

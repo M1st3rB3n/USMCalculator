@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des épreuves - {{ competition.nom }}{% endblock %}
+
+{% block body %}
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('app_competition_index') }}">Compétitions</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('app_competition_engagements', {id: competition.id}) }}">{{ competition.nom }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Épreuves</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Épreuves - {{ competition.nom }}</h1>
+        <div>
+            <a href="{{ path('app_competition_engagements', {id: competition.id}) }}" class="btn btn-outline-primary">
+                <i class="bi bi-people"></i> Gérer les engagements
+            </a>
+            <a href="{{ path('app_competition_index') }}" class="btn btn-outline-secondary">Retour à la liste</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="card-title mb-0">Ajouter une épreuve</h5>
+                </div>
+                <div class="card-body">
+                    {{ component('EpreuveFormComponent', { competition: competition }) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            {{ component('EpreuveListComponent', { competition: competition }) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

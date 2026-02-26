@@ -1,0 +1,63 @@
+<div {{ attributes }}>
+    <div class="card shadow-sm">
+        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">Liste des engagés</h5>
+            <div data-loading="show" class="spinner-border spinner-border-sm text-primary" role="status">
+                <span class="visually-hidden">Chargement...</span>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            {% set engagements_found = this.engagementsFound %}
+            {% for epreuve in competition.epreuves %}
+                {% if epreuve.engagements|length > 0 %}
+                    <div class="bg-light p-2 border-bottom border-top fw-bold">
+                        <i class="bi bi-tag-fill me-1"></i> {{ epreuve.nom }}
+                        <span class="badge bg-secondary ms-2">{{ epreuve.engagements|length }}</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-4">Patineuse</th>
+                                    <th>Club</th>
+                                    <th class="text-end pe-4">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for engagement in epreuve.engagements %}
+                                    <tr>
+                                        <td class="ps-4">{{ engagement.patineuse.prenom }} {{ engagement.patineuse.nom }}</td>
+                                        <td>{{ engagement.patineuse.club ? engagement.patineuse.club.nom : '-' }}</td>
+                                        <td class="text-end pe-4">
+                                            <a
+                                                href="{{ path('app_saisie_notes', { patineuse: engagement.patineuse.id, epreuve: epreuve.id }) }}"
+                                                class="btn btn-sm btn-primary"
+                                            >
+                                                <i class="bi bi-pencil-square"></i> Saisir les notes
+                                            </a>
+                                            <button
+                                                class="btn btn-sm btn-outline-danger"
+                                                data-action="live#action"
+                                                data-live-action-param="delete"
+                                                data-live-engagement-param="{{ engagement.id }}"
+                                                data-live-confirm="Êtes-vous sûr de vouloir supprimer cet engagement ?"
+                                            >
+                                                <i class="bi bi-trash"></i> Supprimer
+                                            </button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            {% if not engagements_found %}
+                <div class="p-4 text-center text-muted">
+                    <i class="bi bi-info-circle"></i> Aucun engagement pour le moment.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
