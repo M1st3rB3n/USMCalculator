@@ -39,6 +39,10 @@ ENV LC_ALL=fr_FR.UTF-8
 # Set working directory
 WORKDIR /var/www/USMCalculator
 
+# Set Symfony environment to production
+ENV APP_ENV=prod
+ENV APP_DEBUG=0
+
 # Copy application files
 COPY . .
 
@@ -47,7 +51,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 # Install PHP dependencies
 ENV COMPOSER_ALLOW_SUPERUSER=1
-RUN composer install && \
+RUN composer install --no-dev --optimize-autoloader && \
     bin/console cache:clear && \
     bin/console doctrine:schema:drop --force && \
     bin/console doctrine:schema:create
