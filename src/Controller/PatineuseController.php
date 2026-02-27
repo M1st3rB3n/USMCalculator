@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class PatineuseController extends AbstractController
 {
     #[Route('/patineuses', name: 'app_patineuse_index')]
-    public function index(NiveauRepository $niveauRepository, Request $request, EntityManagerInterface $entityManager, ClubRepository $clubRepository): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, ClubRepository $clubRepository, NiveauRepository $niveauRepository): Response
     {
         $form = $this->createForm(PatineuseImportType::class);
         $form->handleRequest($request);
@@ -117,7 +117,6 @@ class PatineuseController extends AbstractController
         }
 
         return $this->render('patineuse/index.html.twig', [
-            'niveaux' => $niveauRepository->findAll(),
             'importForm' => $form->createView(),
         ]);
     }
