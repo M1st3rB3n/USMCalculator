@@ -48,6 +48,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Install PHP dependencies
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN composer install --no-dev --optimize-autoloader && \
+    bin/console asset-map:compile && \
     bin/console cache:clear
 
 # Configure Nginx
