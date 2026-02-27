@@ -43,7 +43,8 @@ WORKDIR /var/www/USMCalculator
 COPY . .
 
 # Create data folder
-RUN mkdir -p var/data
+RUN mkdir -p var/data && \
+    chmod -R 777 var/
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
