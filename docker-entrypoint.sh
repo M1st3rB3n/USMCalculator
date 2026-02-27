@@ -7,7 +7,7 @@ chmod -R 777 var/
 # Création de la base de données si elle n'existe pas et exécution des migrations
 if [ -d "var/data" ]; then
     echo "Préparation de la base de données..."
-    php bin/console doctrine:database:create --if-not-exists --no-interaction
+    [ -f var/data/data.db ] || touch var/data/data.db
     echo "Exécution des migrations..."
     php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
 

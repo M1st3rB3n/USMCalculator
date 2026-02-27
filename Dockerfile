@@ -48,9 +48,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Install PHP dependencies
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN composer install --no-dev --optimize-autoloader && \
-    bin/console cache:clear && \
-    mkdir -p var/data && \
-    chmod -R 777 var/data
+    bin/console cache:clear
 
 # Configure Nginx
 RUN rm /etc/nginx/sites-enabled/default && \
@@ -58,7 +56,8 @@ RUN rm /etc/nginx/sites-enabled/default && \
     ln -s /etc/nginx/sites-available/vhost.conf /etc/nginx/sites-enabled/vhost.conf
 
 # Set permissions
-RUN chmod -R 777 var/
+RUN mkdir -p var/data && \
+    chmod -R 777 var/data
 
 # Volume pour la base de données SQLite
 VOLUME /var/www/USMCalculator/var/data
