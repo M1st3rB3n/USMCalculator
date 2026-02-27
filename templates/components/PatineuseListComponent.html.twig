@@ -1,0 +1,65 @@
+<div id="patineuse-list" {{ attributes }}>
+    {% for niveau in this.niveaux %}
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h2 class="h5 mb-0">{{ niveau.nom }}</h2>
+                <span class="badge bg-light text-primary">{{ niveau.patineuses|length }} patineuses</span>
+            </div>
+            <div class="card-body">
+                {% if niveau.patineuses|length > 0 %}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Prénom</th>
+                                    <th>Nom</th>
+                                    <th>Club</th>
+                                    <th>Année</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for patineuse in niveau.patineuses %}
+                                    <tr>
+                                        <td>{{ patineuse.prenom }}</td>
+                                        <td>{{ patineuse.nom }}</td>
+                                        <td>
+                                            {% if patineuse.club %}
+                                                {{ patineuse.club.nom }}{% if patineuse.club.ville %} <small class="text-muted">({{ patineuse.club.ville }})</small>{% endif %}
+                                            {% else %}
+                                                <span class="text-muted">N/A</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ patineuse.anneeDeNaissance }}</td>
+                                        <td class="text-end">
+                                            <div class="btn-group">
+                                                <a href="{{ path('app_patineuse_edit', {id: patineuse.id}) }}" class="btn btn-sm btn-outline-warning">
+                                                    <i class="bi bi-pencil"></i> Modifier
+                                                </a>
+                                                <button
+                                                    class="btn btn-sm btn-outline-danger"
+                                                    data-action="live#action"
+                                                    data-live-action-param="delete"
+                                                    data-live-patineuse-param="{{ patineuse.id }}"
+                                                    data-confirm="Êtes-vous sûr de vouloir supprimer cette patineuse ?"
+                                                >
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted mb-0"><i class="bi bi-info-circle"></i> Aucune patineuse dans ce niveau.</p>
+                {% endif %}
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> Aucun niveau n'a été trouvé.
+        </div>
+    {% endfor %}
+</div>
