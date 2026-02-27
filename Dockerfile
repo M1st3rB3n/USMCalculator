@@ -42,6 +42,9 @@ WORKDIR /var/www/USMCalculator
 # Copy application files
 COPY . .
 
+# Create data folder
+RUN mkdir var/data
+
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
@@ -56,9 +59,6 @@ RUN composer install --no-dev --optimize-autoloader && \
 RUN rm /etc/nginx/sites-enabled/default && \
     cp nginx/vhost.conf /etc/nginx/sites-available/ && \
     ln -s /etc/nginx/sites-available/vhost.conf /etc/nginx/sites-enabled/vhost.conf
-
-# Create data folder
-RUN mkdir var/data
 
 # Set permissions
 RUN chmod -R 777 var/
