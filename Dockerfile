@@ -57,6 +57,9 @@ RUN rm /etc/nginx/sites-enabled/default && \
     cp nginx/vhost.conf /etc/nginx/sites-available/ && \
     ln -s /etc/nginx/sites-available/vhost.conf /etc/nginx/sites-enabled/vhost.conf
 
+# Create data folder
+RUN mkdir var/data
+
 # Set permissions
 RUN chmod -R 777 var/
 
