@@ -50,9 +50,7 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN composer install --no-dev --optimize-autoloader && \
     bin/console cache:clear && \
     mkdir -p var/data && \
-    bin/console doctrine:schema:drop --force && \
-    chmod -R 777 var/data && \
-    bin/console doctrine:schema:create
+    chmod -R 777 var/data
 
 # Configure Nginx
 RUN rm /etc/nginx/sites-enabled/default && \
@@ -61,6 +59,9 @@ RUN rm /etc/nginx/sites-enabled/default && \
 
 # Set permissions
 RUN chmod -R 777 var/
+
+# Volume pour la base de données SQLite
+VOLUME /var/www/USMCalculator/var/data
 
 # Copy and setup entrypoint
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
