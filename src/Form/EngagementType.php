@@ -7,6 +7,7 @@ use App\Entity\Engagement;
 use App\Entity\Patineuse;
 use App\Repository\AnneeNaissanceRepository;
 use App\Repository\EpreuveRepository;
+use App\Repository\PatineuseRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -31,6 +32,11 @@ class EngagementType extends AbstractType
         $builder
             ->add('patineuse', EntityType::class, [
                 'class' => Patineuse::class,
+                'query_builder' => function (PatineuseRepository $er) {
+                    return $er->createQueryBuilder('p')
+                        ->orderBy('p.prenom', 'ASC')
+                        ->addOrderBy('p.nom', 'ASC');
+                },
                 'choice_label' => function (Patineuse $patineuse) {
                     return $patineuse->getPrenom().' '.$patineuse->getNom();
                 },
