@@ -20,7 +20,7 @@
                     {% for item in this.categoriesWithCounts %}
                         {% set categorie = item.categorie %}
                         <tr>
-                            <td>{{ categorie.nom }}</td>
+                            <td>{{ categorie.nomComplet }}</td>
                             <td>
                                 {% for annee in categorie.annees %}
                                     <span class="badge bg-info text-dark">{{ annee.annee }}</span>

@@ -14,6 +14,7 @@ use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
+use Symfony\UX\LiveComponent\LiveCollectionTrait;
 
 #[AsLiveComponent]
 class CategorieFormComponent extends AbstractController
@@ -21,6 +22,7 @@ class CategorieFormComponent extends AbstractController
     use DefaultActionTrait;
     use ComponentWithFormTrait;
     use ComponentToolsTrait;
+    use LiveCollectionTrait;
 
     #[LiveProp]
     public ?Categorie $initialFormData = null;
@@ -47,17 +49,33 @@ class CategorieFormComponent extends AbstractController
         /** @var Categorie $categorie */
         $categorie = $this->getForm()->getData();
 
+        // Double check for duplicate years within the SAME category manually
+        // because UniqueEntity('annee') only checks against other categories in DB
+        $annees = [];
+        foreach ($categorie->getAnnees() as $anneeEntity) {
+            $val = $anneeEntity->getAnnee();
+            if (null === $val) {
+                continue;
+            }
+            if (in_array($val, $annees)) {
+                $this->addFlash('error', 'Vous avez saisi deux fois la même année.');
+
+                return null;
+            }
+            $annees[] = $val;
+        }
+
         try {
             $this->entityManager->persist($categorie);
             $this->entityManager->flush();
-
-            $this->addFlash('success', 'La catégorie a été enregistrée avec succès.');
-
-            return $this->redirectToRoute('app_categorie_index');
         } catch (\Exception $e) {
-            // Handle error (e.g., logging)
+            $this->addFlash('error', 'Une erreur est survenue lors de l\'enregistrement. Vérifiez que les années ne sont pas déjà utilisées par une autre catégorie.');
+
+            return null;
         }
 
-        return null;
+        $this->addFlash('success', 'La catégorie a été enregistrée avec succès.');
+
+        return $this->redirectToRoute('app_categorie_index');
     }
 }

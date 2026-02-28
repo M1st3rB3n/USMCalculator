@@ -40,6 +40,17 @@ class Categorie
         return $this->nom;
     }
 
+    public function getNomComplet(): string
+    {
+        $annees = $this->annees->map(fn (CategorieAnnee $annee) => $annee->getAnnee())->toArray();
+        if (empty($annees)) {
+            return $this->nom;
+        }
+        sort($annees);
+
+        return sprintf('%s (%s)', $this->nom, implode(', ', $annees));
+    }
+
     public function setNom(string $nom): static
     {
         $this->nom = $nom;
@@ -76,7 +87,6 @@ class Categorie
 
         return $this;
     }
-
 
     /**
      * @return Collection<int, Epreuve>
