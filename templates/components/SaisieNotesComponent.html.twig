@@ -31,7 +31,7 @@
                                             {% set val = (index - nbChoix) * techField.vars.value.elementTechnique.QoE + techField.vars.value.elementTechnique.score %}
                                             <input type="radio"
                                                    class="btn-check qoe-radio"
-                                                   name="btnradio_{{ index_item }}"
+                                                   name="ignore_btnradio_{{ index_item }}"
                                                    id="btnradio_{{ index_item }}_{{ index }}"
                                                    value="{{ val }}"
                                                    data-index="{{ index_item }}"
