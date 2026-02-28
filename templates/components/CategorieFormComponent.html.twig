@@ -1,0 +1,77 @@
+<div {{ attributes }}>
+    {{ form_start(form, {
+        attr: {
+            'data-action': 'live#action:prevent',
+            'data-live-action-param': 'save'
+        }
+    }) }}
+        {{ form_row(form.nom) }}
+
+        <div class="mt-4 mb-4 p-3 border rounded bg-light">
+            <h4 class="h5 mb-3">{{ form_label(form.annees) }}</h4>
+            <div id="annees-list"
+                 data-prototype="{{ form_widget(form.annees.vars.prototype)|e('html_attr') }}"
+                 data-index="{{ form.annees|length }}">
+                {% for anneeField in form.annees %}
+                    <div class="annee-item mb-2 d-flex gap-2">
+                        <div class="flex-grow-1">
+                            {{ form_widget(anneeField) }}
+                            {{ form_errors(anneeField) }}
+                        </div>
+                        <button type="button" class="btn btn-outline-danger remove-annee">Supprimer</button>
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="add-annee">Ajouter une année</button>
+        </div>
+
+        <div class="d-flex justify-content-between mt-3">
+            <a href="{{ path('app_categorie_index') }}" class="btn btn-secondary">Annuler</a>
+            <button type="submit" class="btn {{ initialFormData and initialFormData.id ? 'btn-primary' : 'btn-success' }}">
+                Enregistrer
+                <span data-loading="show" class="spinner-border spinner-border-sm ms-1" role="status"></span>
+            </button>
+        </div>
+    {{ form_end(form) }}
+
+    <script>
+        /**
+         * Note: Since this is inside a LiveComponent, we use a simple script that
+         * handles the DOM manipulation for the collection.
+         * The LiveComponent will sync the submitted data.
+         */
+        (function() {
+            const container = document.getElementById('annees-list');
+            const addButton = document.getElementById('add-annee');
+
+            if (!container || !addButton) return;
+
+            // Remove existing listeners to avoid duplicates on re-render
+            const newAddButton = addButton.cloneNode(true);
+            addButton.parentNode.replaceChild(newAddButton, addButton);
+
+            newAddButton.addEventListener('click', function() {
+                const prototype = container.dataset.prototype;
+                const index = parseInt(container.dataset.index);
+
+                const newForm = prototype.replace(/__name__/g, index);
+                container.dataset.index = index + 1;
+
+                const div = document.createElement('div');
+                div.classList.add('annee-item', 'mb-2', 'd-flex', 'gap-2');
+                div.innerHTML = `
+                    <div class="flex-grow-1">${newForm}</div>
+                    <button type="button" class="btn btn-outline-danger remove-annee">Supprimer</button>
+                `;
+
+                container.appendChild(div);
+            });
+
+            container.addEventListener('click', function(e) {
+                if (e.target.classList.contains('remove-annee')) {
+                    e.target.closest('.annee-item').remove();
+                }
+            });
+        })();
+    </script>
+</div>
