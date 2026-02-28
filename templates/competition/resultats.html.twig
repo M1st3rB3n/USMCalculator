@@ -35,7 +35,17 @@
                     {% set rank = 1 %}
                     {% for stats in clubStats %}
                         <tr>
-                            <td class="ps-4"><strong>{{ rank }}</strong></td>
+                            <td class="ps-4">
+                                {% if rank == 1 %}
+                                    <span class="fs-5" title="Or">&#x1F947;</span>
+                                {% elseif rank == 2 %}
+                                    <span class="fs-6" title="Argent">&#x1F948;</span>
+                                {% elseif rank == 3 %}
+                                    <span class="fs-6" title="Bronze">&#x1F949;</span>
+                                {% else %}
+                                    <strong>{{ rank }}</strong>
+                                {% endif %}
+                            </td>
                             <td>
                                 {% if stats.club.logo %}
                                     <img src="{{ asset('uploads/logos/' ~ stats.club.logo) }}" alt="{{ stats.club.nom }}" style="height: 24px;" class="me-2">
@@ -46,7 +56,7 @@
                             <td class="text-center">{{ stats.totalPoints|number_format(2, ',', ' ') }}</td>
                             <td class="text-center">
                                 <span class="badge bg-success fs-6">
-                                    {{ stats.moyenne|number_format(3, ',', ' ') }}
+                                    {{ stats.moyenne|number_format(2, ',', ' ') }}
                                 </span>
                             </td>
                         </tr>
@@ -91,7 +101,17 @@
                         {% set epreuveRank = 1 %}
                         {% for engagement in epreuve.engagements|sort((a, b) => b.totalNotes <=> a.totalNotes) %}
                             <tr>
-                                <td class="ps-4"><strong>{{ epreuveRank }}</strong></td>
+                                <td class="ps-4">
+                                    {% if epreuveRank == 1 %}
+                                        <span class="fs-6" title="Or">&#x1F947;</span>
+                                    {% elseif epreuveRank == 2 %}
+                                        <span class="fs-7" title="Argent">&#x1F948;</span>
+                                    {% elseif epreuveRank == 3 %}
+                                        <span class="fs-7" title="Bronze">&#x1F949;</span>
+                                    {% else %}
+                                        <strong>{{ epreuveRank }}</strong>
+                                    {% endif %}
+                                </td>
                                 <td>
                                     <strong>{{ engagement.patineuse.nom|upper }}</strong> {{ engagement.patineuse.prenom }}
                                 </td>
