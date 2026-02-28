@@ -62,6 +62,8 @@ class PatineuseController extends AbstractController
                     // Supposons que la première ligne est l'en-tête
                     $header = array_shift($rows);
                     $importedCount = 0;
+                    $clubsCache = [];
+                    $niveauxCache = [];
 
                     foreach ($rows as $row) {
                         if (count($row) < 5) {
@@ -70,9 +72,9 @@ class PatineuseController extends AbstractController
 
                         $nom = $row[0];
                         $prenom = $row[1];
-                        $clubNom = $row[2];
+                        $clubNom = trim($row[2] ?? '');
                         $annee = $row[3];
-                        $niveauNom = $row[4];
+                        $niveauNom = trim($row[4] ?? '');
 
                         if (!$nom || !$prenom) {
                             continue;
@@ -84,21 +86,35 @@ class PatineuseController extends AbstractController
                         $patineuse->setAnneeDeNaissance((int) $annee);
 
                         // Gestion du club
-                        if ($clubNom) {
-                            $club = $clubRepository->findOneBy(['nom' => $clubNom]);
-                            if (!$club) {
-                                $club = new Club();
-                                $club->setNom($clubNom);
-                                $entityManager->persist($club);
+                        if ($clubNom !== '') {
+                            if (isset($clubsCache[$clubNom])) {
+                                $club = $clubsCache[$clubNom];
+                            } else {
+                                $club = $clubRepository->findOneBy(['nom' => $clubNom]);
+                                if (!$club) {
+                                    $club = new Club();
+                                    $club->setNom($clubNom);
+                                    $entityManager->persist($club);
+                                }
+                                $clubsCache[$clubNom] = $club;
                             }
                             $patineuse->setClub($club);
                         }
 
                         // Gestion du niveau
-                        if ($niveauNom) {
-                            $niveau = $niveauRepository->findOneBy(['nom' => $niveauNom]);
-                            if ($niveau) {
+                        if ($niveauNom !== '') {
+                            if (isset($niveauxCache[$niveauNom])) {
+                                $niveau = $niveauxCache[$niveauNom];
+                            } else {
+                                $niveau = $niveauRepository->findOneBy(['nom' => $niveauNom]);
+                                if ($niveau) {
+                                    $niveauxCache[$niveauNom] = $niveau;
+                                }
+                            }
+
+                            if (isset($niveau)) {
                                 $patineuse->setNiveau($niveau);
+                                unset($niveau);
                             }
                         }
 
