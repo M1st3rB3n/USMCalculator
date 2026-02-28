@@ -26,8 +26,8 @@
                             <td>
                                 <div class="d-flex align-items-center gap-2">
                                     <div class="btn-group" role="group">
-                                        {% for index in 0..6 %}
-                                            {% set nbChoix = 3 %}
+                                        {% set nbChoix = 3 %}
+                                            {% for index in 0..(nbChoix*2) %}
                                             {% set val = (index - nbChoix) * techField.vars.value.elementTechnique.QoE + techField.vars.value.elementTechnique.score %}
                                             <input type="radio"
                                                    class="btn-check qoe-radio"
@@ -53,6 +53,7 @@
                             </td>
                         </tr>
                     {% endfor %}
+                    {% do form.techniques.setRendered %}
                 </tbody>
                 <tfoot>
                     <tr class="table-light">
@@ -109,6 +110,7 @@
                             </td>
                         </tr>
                     {% endfor %}
+                    {% do form.artistiques.setRendered %}
                 </tbody>
                 <tfoot>
                     <tr class="table-light">
@@ -127,7 +129,12 @@
         </div>
 
         <div class="d-flex justify-content-between mt-4">
-            <a href="{{ path('app_engagement_index') }}" class="btn btn-secondary">Retour aux engagements</a>
+            <div>
+                <a href="{{ path('app_engagement_index') }}" class="btn btn-secondary">Retour aux engagements</a>
+                <button type="button" class="btn btn-outline-danger ms-2" data-action="click->saisie-notes#unsetAll">
+                    Effacer tous les choix
+                </button>
+            </div>
             <button type="submit" class="btn btn-success btn-lg px-5">
                 <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" data-live-loading-target="display"></span>
                 Enregistrer toutes les notes

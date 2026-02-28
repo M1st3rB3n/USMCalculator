@@ -41,6 +41,22 @@ export default class extends Controller {
         this.calculateTotals();
     }
 
+    unsetAll(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const inputs = this.element.querySelectorAll('.qoe-input');
+        inputs.forEach(input => {
+            input.value = '';
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+
+        const radios = this.element.querySelectorAll('.qoe-radio');
+        radios.forEach(r => r.checked = false);
+
+        this.calculateTotals();
+    }
+
     syncRadiosFromInputs() {
         const inputs = this.element.querySelectorAll('.qoe-input');
         inputs.forEach(input => {
