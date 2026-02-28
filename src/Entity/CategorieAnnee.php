@@ -4,8 +4,11 @@ namespace App\Entity;
 
 use App\Repository\AnneeNaissanceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AnneeNaissanceRepository::class)]
+#[UniqueEntity(fields: ['annee'], message: 'Cette année est déjà associée à une autre catégorie.')]
 class CategorieAnnee
 {
     #[ORM\Id]
@@ -14,6 +17,8 @@ class CategorieAnnee
     private ?int $id = null;
 
     #[ORM\Column(unique: true)]
+    #[Assert\NotBlank(message: 'L\'année ne peut pas être vide.')]
+    #[Assert\Positive(message: 'L\'année doit être positive.')]
     private ?int $annee = null;
 
     #[ORM\ManyToOne(inversedBy: 'annees')]

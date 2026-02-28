@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class CategorieType extends AbstractType
 {
@@ -24,7 +25,11 @@ class CategorieType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
+                'delete_empty' => true,
                 'label' => 'Années de naissance associées',
+                'constraints' => [
+                    new Assert\Valid(),
+                ],
             ])
         ;
     }
