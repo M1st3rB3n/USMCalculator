@@ -18,7 +18,8 @@ class NoteTechniqueType extends AbstractType
     {
         $builder
             ->add('note', NumberType::class, [
-                'label' => 'note',
+                'required' => false,
+                'label' => 'Note',
                 'attr' => ['class' => 'form-control'],
             ])
         ;
