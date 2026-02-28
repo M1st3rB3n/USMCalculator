@@ -36,7 +36,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for engagement in epreuve.engagements %}
+                        {% for engagement in epreuve.engagements|sort((a, b) => b.totalNotes <=> a.totalNotes) %}
                             <tr>
                                 <td class="ps-4">
                                     <strong>{{ engagement.patineuse.nom|upper }}</strong> {{ engagement.patineuse.prenom }}
