@@ -67,8 +67,47 @@ class CompetitionController extends AbstractController
     #[Route('/{id}/resultats', name: 'app_competition_resultats', methods: ['GET'])]
     public function resultats(Competition $competition): Response
     {
+        $clubStats = [];
+
+        foreach ($competition->getEpreuves() as $epreuve) {
+            foreach ($epreuve->getEngagements() as $engagement) {
+                $club = $engagement->getPatineuse()->getClub();
+                if (!$club) {
+                    continue;
+                }
+
+                $clubId = $club->getId();
+                if (!isset($clubStats[$clubId])) {
+                    $clubStats[$clubId] = [
+                        'club' => $club,
+                        'totalPoints' => 0,
+                        'nombreEngagements' => 0,
+                    ];
+                }
+
+                $totalNotes = $engagement->getTotalNotes();
+                if ($totalNotes <= 0) {
+                    continue;
+                }
+
+                $clubStats[$clubId]['totalPoints'] += $totalNotes;
+                ++$clubStats[$clubId]['nombreEngagements'];
+            }
+        }
+
+        // Calculer la moyenne (pondérée par le nombre d'engagements)
+        foreach ($clubStats as $id => $stats) {
+            $clubStats[$id]['moyenne'] = $stats['nombreEngagements'] > 0
+                ? $stats['totalPoints'] / $stats['nombreEngagements']
+                : 0;
+        }
+
+        // Trier par moyenne décroissante
+        uasort($clubStats, fn ($a, $b) => $b['moyenne'] <=> $a['moyenne']);
+
         return $this->render('competition/resultats.html.twig', [
             'competition' => $competition,
+            'clubStats' => $clubStats,
         ]);
     }
 
