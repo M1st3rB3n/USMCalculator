@@ -1,0 +1,60 @@
+<div id="categorie-list" {{ attributes }}>
+    <div class="card shadow">
+        <div class="card-body">
+            <div data-loading="show" class="text-center mb-3">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Chargement...</span>
+                </div>
+            </div>
+
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Nom</th>
+                        <th>Années de naissance</th>
+                        <th>Nombre de patineuses</th>
+                        <th class="text-end px-4">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in this.categoriesWithCounts %}
+                        {% set categorie = item.categorie %}
+                        <tr>
+                            <td>{{ categorie.nom }}</td>
+                            <td>
+                                {% for annee in categorie.annees %}
+                                    <span class="badge bg-info text-dark">{{ annee.annee }}</span>
+                                {% else %}
+                                    <span class="text-muted small">Aucune année</span>
+                                {% endfor %}
+                            </td>
+                            <td>{{ item.patineuse_count }}</td>
+                            <td class="text-end px-4">
+                                <div class="btn-group">
+                                    <a href="{{ path('app_categorie_edit', {id: categorie.id}) }}" class="btn btn-sm btn-outline-warning">
+                                        <i class="bi bi-pencil"></i> Modifier
+                                    </a>
+                                    <button
+                                        class="btn btn-sm btn-outline-danger"
+                                        data-action="live#action"
+                                        data-live-action-param="delete"
+                                        data-live-categorie-param="{{ categorie.id }}"
+                                        data-live-confirm="Êtes-vous sûr de vouloir supprimer cette catégorie ? Cela pourrait affecter les épreuves associées."
+                                    >
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted">
+                                <i class="bi bi-info-circle"></i> Aucune catégorie trouvée.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
