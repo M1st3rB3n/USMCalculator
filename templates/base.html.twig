@@ -56,6 +56,9 @@
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="{{ path('app_element_technique_index') }}">Éléments Techniques</a></li>
                                 <li><a class="dropdown-item" href="{{ path('app_element_artistique_index') }}">Éléments Artistiques</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{{ path('app_database_export') }}"><i class="bi bi-download"></i> Exporter la base</a></li>
+                                <li><a class="dropdown-item" href="{{ path('app_database_import') }}"><i class="bi bi-upload"></i> Importer une base</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -72,6 +75,17 @@
                 </div>
             </div>
         </nav>
+
+        <div class="container">
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label == 'error' ? 'danger' : label }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
 
         {% block body %}{% endblock %}
     </body>
