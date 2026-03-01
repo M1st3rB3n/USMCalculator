@@ -7,6 +7,7 @@ use App\Entity\Patineuse;
 use App\Form\PatineuseImportType;
 use App\Repository\ClubRepository;
 use App\Repository\NiveauRepository;
+use App\Repository\PatineuseRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,7 +18,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class PatineuseController extends AbstractController
 {
     #[Route('/patineuses', name: 'app_patineuse_index')]
-    public function index(Request $request, EntityManagerInterface $entityManager, ClubRepository $clubRepository, NiveauRepository $niveauRepository): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, ClubRepository $clubRepository, NiveauRepository $niveauRepository, PatineuseRepository $patineuseRepository): Response
     {
         $form = $this->createForm(PatineuseImportType::class);
         $form->handleRequest($request);
@@ -80,13 +81,18 @@ class PatineuseController extends AbstractController
                             continue;
                         }
 
-                        $patineuse = new Patineuse();
-                        $patineuse->setNom($nom);
-                        $patineuse->setPrenom($prenom);
+                        $patineuse = $patineuseRepository->findOneBy(['nom' => $nom, 'prenom' => $prenom]);
+
+                        if (!$patineuse) {
+                            $patineuse = new Patineuse();
+                            $patineuse->setNom($nom);
+                            $patineuse->setPrenom($prenom);
+                        }
+
                         $patineuse->setAnneeDeNaissance((int) $annee);
 
                         // Gestion du club
-                        if ($clubNom !== '') {
+                        if ('' !== $clubNom) {
                             if (isset($clubsCache[$clubNom])) {
                                 $club = $clubsCache[$clubNom];
                             } else {
@@ -102,7 +108,7 @@ class PatineuseController extends AbstractController
                         }
 
                         // Gestion du niveau
-                        if ($niveauNom !== '') {
+                        if ('' !== $niveauNom) {
                             if (isset($niveauxCache[$niveauNom])) {
                                 $niveau = $niveauxCache[$niveauNom];
                             } else {
