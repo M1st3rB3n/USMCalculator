@@ -108,9 +108,8 @@ class SaisieNotesComponent extends AbstractController
 
             $this->addFlash('success', 'Les notes ont été enregistrées avec succès.');
 
-            return $this->redirectToRoute('app_saisie_notes', [
-                'patineuse' => $this->patineuse->getId(),
-                'epreuve' => $this->epreuve->getId(),
+            return $this->redirectToRoute('app_competition_engagements', [
+                'id' => $this->epreuve->getCompetition()->getId(),
             ]);
         }
 
