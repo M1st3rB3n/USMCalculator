@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Competition;
 use App\Form\CompetitionType;
 use App\Repository\CompetitionRepository;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -67,6 +69,45 @@ class CompetitionController extends AbstractController
     #[Route('/{id}/resultats', name: 'app_competition_resultats', methods: ['GET'])]
     public function resultats(Competition $competition): Response
     {
+        $clubStats = $this->getClubStats($competition);
+
+        return $this->render('competition/resultats.html.twig', [
+            'competition' => $competition,
+            'clubStats' => $clubStats,
+        ]);
+    }
+
+    #[Route('/{id}/resultats/pdf', name: 'app_competition_resultats_pdf', methods: ['GET'])]
+    public function pdfResultats(Competition $competition): Response
+    {
+        $clubStats = $this->getClubStats($competition);
+
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+        $pdfOptions->set('isRemoteEnabled', true);
+
+        $dompdf = new Dompdf($pdfOptions);
+
+        $html = $this->renderView('competition/pdf_resultats.html.twig', [
+            'competition' => $competition,
+            'clubStats' => $clubStats,
+        ]);
+
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        $output = $dompdf->output();
+        $filename = sprintf('resultats_%s.pdf', str_replace(' ', '_', $competition->getNom()));
+
+        return new Response($output, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => sprintf('inline; filename="%s"', $filename),
+        ]);
+    }
+
+    private function getClubStats(Competition $competition): array
+    {
         $clubStats = [];
 
         foreach ($competition->getEpreuves() as $epreuve) {
@@ -105,10 +146,7 @@ class CompetitionController extends AbstractController
         // Trier par moyenne décroissante
         uasort($clubStats, fn ($a, $b) => $b['moyenne'] <=> $a['moyenne']);
 
-        return $this->render('competition/resultats.html.twig', [
-            'competition' => $competition,
-            'clubStats' => $clubStats,
-        ]);
+        return $clubStats;
     }
 
     #[Route('/{id}/engagements', name: 'app_competition_engagements', methods: ['GET'])]
