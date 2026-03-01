@@ -11,10 +11,59 @@
         </div>
     {% endfor %}
 
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Liste des éléments techniques</h1>
-        <a href="{{ path('app_element_technique_new') }}" class="btn btn-success">
-            <i class="bi bi-plus-circle"></i> Nouvel élément</a>
+        <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#importModal">
+                <i class="bi bi-file-earmark-excel"></i> Importer Excel / Google Sheet
+            </button>
+            <a href="{{ path('app_element_technique_new') }}" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Nouvel élément
+            </a>
+        </div>
+    </div>
+
+    <!-- Modal d'importation -->
+    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importModalLabel">Importer des éléments techniques</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                {{ form_start(importForm) }}
+                <div class="modal-body">
+                    <p>Le fichier Excel doit contenir les colonnes suivantes dans cet ordre :</p>
+                    <ul>
+                        <li>Nom</li>
+                        <li>Famille</li>
+                        <li>Score</li>
+                        <li>QoE</li>
+                    </ul>
+                    {{ form_row(importForm.file) }}
+                    <div class="my-3 text-center text-muted">OU</div>
+                    {{ form_row(importForm.googleSheetUrl) }}
+                    <div class="form-text mt-1">
+                        <small>
+                            <i class="bi bi-info-circle"></i> Le Google Sheet doit être accessible au web
+                            (Fichier > Partager > Publier sur le Web, ou Partager avec "Tous les utilisateurs disposant du lien").
+                        </small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Importer</button>
+                </div>
+                {{ form_end(importForm) }}
+            </div>
+        </div>
     </div>
 
     <div class="card shadow">
