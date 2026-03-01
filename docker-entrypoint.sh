@@ -19,7 +19,7 @@ fi
 # Création de l'utilisateur admin si les variables ENV sont présentes
 if [ ! -z "$ADMIN_EMAIL" ] && [ ! -z "$ADMIN_PASSWORD" ]; then
     echo "Tentative de création de l'utilisateur $ADMIN_EMAIL..."
-    php bin/console app:create-user "$ADMIN_EMAIL" "$ADMIN_PASSWORD" --no-interaction || echo "Erreur lors de la création de l'utilisateur."
+    php bin/console app:create-user "$ADMIN_EMAIL" "$ADMIN_PASSWORD" "ROLE_ADMIN" --no-interaction || echo "Erreur lors de la création de l'utilisateur."
 fi
 
 # Lancement des services

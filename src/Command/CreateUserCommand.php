@@ -30,6 +30,7 @@ class CreateUserCommand extends Command
         $this
             ->addArgument('email', InputArgument::REQUIRED, 'Email de l\'utilisateur')
             ->addArgument('password', InputArgument::REQUIRED, 'Mot de passe de l\'utilisateur')
+            ->addArgument('role', InputArgument::OPTIONAL, 'Rôle de l\'utilisateur (ex: ROLE_ADMIN, ROLE_JUGE)', 'ROLE_USER')
         ;
     }
 
@@ -38,6 +39,7 @@ class CreateUserCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $email = $input->getArgument('email');
         $password = $input->getArgument('password');
+        $role = $input->getArgument('role');
 
         $existingUser = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
         if ($existingUser) {
@@ -48,7 +50,7 @@ class CreateUserCommand extends Command
 
         $user = new User();
         $user->setEmail($email);
-        $user->setRoles(['ROLE_USER']);
+        $user->setRoles([$role]);
 
         $hashedPassword = $this->passwordHasher->hashPassword(
             $user,

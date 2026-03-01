@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvel utilisateur{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-success text-white">
+            <h1 class="h3 mb-0">Créer un nouvel utilisateur</h1>
+        </div>
+        <div class="card-body">
+            {{ include('user/_form.html.twig', {'button_label': 'Créer'}) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

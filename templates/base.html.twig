@@ -56,6 +56,10 @@
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="{{ path('app_element_technique_index') }}">Éléments Techniques</a></li>
                                 <li><a class="dropdown-item" href="{{ path('app_element_artistique_index') }}">Éléments Artistiques</a></li>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{{ path('app_user_index') }}"><i class="bi bi-people"></i> Utilisateurs</a></li>
+                                {% endif %}
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="{{ path('app_database_export') }}"><i class="bi bi-download"></i> Exporter la base</a></li>
                                 <li><a class="dropdown-item" href="{{ path('app_database_import') }}"><i class="bi bi-upload"></i> Importer une base</a></li>

@@ -1,0 +1,32 @@
+{{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_row(form.email) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_label(form.roles) }}
+            <div class="d-flex gap-3 mb-3">
+                {% for child in form.roles %}
+                    <div class="form-check">
+                        {{ form_widget(child) }}
+                        {{ form_label(child) }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-6">
+            {{ form_row(form.plainPassword.first) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.plainPassword.second) }}
+        </div>
+    </div>
+
+    <div class="mt-4 d-flex gap-2">
+        <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+        <a href="{{ path('app_user_index') }}" class="btn btn-outline-secondary">Retour à la liste</a>
+    </div>
+{{ form_end(form) }}
